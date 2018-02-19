@@ -1,0 +1,8 @@
+registries:
+  localRegistry:
+    url: http://app
+    port: 5000
+    username: root
+    password: root
+    refresh-rate: "5m"
+    skip-tls-validation: true

@@ -1,0 +1,31 @@
+version: '3'
+services:
+  app:
+    container_name: reg-app
+    image: registry:2.6.2
+    ports:
+      - 5000:5000
+    volumes:
+      - ./registry.yml:/etc/docker/registry/config.yml
+      - /data/registry:/var/lib/registry
+    restart: always
+
+  web:
+    container_name: reg-web
+    image: snagles/docker-registry-manager:v3.0.0
+    ports:
+      - 8080:80
+    volumes:
+      - ./manager.yml:/app/registries.yml
+    environment:
+      - MANAGER_PORT=80
+      - MANAGER_REGISTRIES=/app/registries.yml
+      - MANAGER_LOG_LEVEL=warn
+    links:
+      - app:app
+    depends_on:
+      - app
+
+volumes:
+  app-data:
+    driver: local
